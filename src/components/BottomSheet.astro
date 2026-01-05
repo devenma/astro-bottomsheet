@@ -1,0 +1,293 @@
+---
+/**
+ * BottomSheet Component for Astro
+ * A draggable bottom panel component for displaying information
+ *
+ * @example
+ * import BottomSheet from '@/components/BottomSheetAstro/BottomSheet.astro';
+ * <BottomSheet sections={3} />
+ */
+
+interface Props {
+  class?: string;
+  sections?: number;
+  baseColor?: string;
+  textColor?: string;
+  borderColor?: string;
+  options?: {
+    closeOnOverlayClick?: boolean;
+  };
+}
+
+const {
+  class: className = "",
+  sections = 3,
+  baseColor = "#ffffff",
+  textColor = "#0f172a",
+  borderColor = "#e2e8f0",
+  options = { closeOnOverlayClick: false },
+} = Astro.props;
+---
+
+<!-- BottomSheet -->
+<div
+  id="bottomsheet-container"
+  class="fixed inset-0 flex items-end md:items-center justify-center z-50"
+  data-options={JSON.stringify(options)}
+  style={`
+      --bottomsheet-base-color: ${baseColor};
+      --bottomsheet-text-color: ${textColor};
+      --bottomsheet-border-color: ${borderColor};
+    `}
+>
+  <div
+    id="bottomsheet"
+    class:list={[
+      "border border-transparent cursor-auto duration-600 ease-in-out flex flex-col h-0 self-end md:border-t-transparent md:flex-row md:h-full md:ml-auto md:mt-0 md:rounded-t-none md:w-0 mt-auto pointer-events-auto relative rounded-t-4xl transition-all w-full will-change-auto z-50 md:max-w-125",
+      className,
+    ]}
+  >
+    <!-- Drag Handle -->
+    <div
+      id="bottomsheet-drag-handle"
+      class="flex items-center py-2 md:py-0 md:px-3 justify-center cursor-grab"
+    >
+      <div
+        class="bottomsheet-line w-10 md:w-auto md:h-16 border-b-4 md:border-b-0 md:border-l-4 rounded-full"
+        style={`border-color: color-mix(in srgb, ${borderColor} 80%, transparent);`}
+      >
+      </div>
+    </div>
+
+    <!-- Content Wrapper -->
+    <div id="bottomsheet-content-wrapper" class="flex flex-col w-full">
+      <!-- Header -->
+      <header
+        id="bottomsheet-header"
+        class="flex gap-4 py-2 px-1 items-center border-b shrink-0"
+        style={`border-color: ${borderColor};`}
+      >
+        <h2
+          id="bottomsheet-title"
+          class="m-0 italic font-light max-md:text-xl md:text-3xl md:font-medium text-nowrap text-ellipsis overflow-hidden"
+          style={`color: ${textColor};`}
+        >
+        </h2>
+        <div id="bottomsheet-share-btn" class="bottomsheet-header-btn ml-auto">
+          <span class="hidden"></span>
+        </div>
+        <button
+          id="bottomsheet-close-btn"
+          class="bottomsheet-close-btn bottomsheet-header-btn text-base transition rounded-full p-2 cursor-pointer size-8 flex items-center justify-center"
+          style={`
+            color: color-mix(in srgb, ${textColor} 70%, transparent);
+            fill: color-mix(in srgb, ${textColor} 70%, transparent);
+            background-color: color-mix(in srgb, ${textColor} 10%, transparent);
+          `}
+          title="Close"
+        >
+          <svg
+            fill="currentColor"
+            viewBox="0 0 384 512"
+            width="1em"
+            height="1em"
+          >
+            <path
+              d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L236.7 256 342.6 150.6z"
+            ></path>
+          </svg>
+        </button>
+      </header>
+
+      <!-- Content -->
+      <div
+        id="bottomsheet-content"
+        class="p-4 flex flex-col gap-2 overflow-y-auto overflow-x-hidden flex-1"
+      >
+        <!-- Error Message (always present, hidden by default) -->
+        <section
+          id="bottomsheet-error"
+          class="bottomsheet-section flex-col items-start gap-4 md:min-w-48 lg:min-w-64 xl:min-w-81 hidden"
+          style={`color: ${textColor};`}
+        >
+          <div
+            class="bottomsheet-error flex-col gap-4 w-full flex items-center text-xl text-center"
+            style={`color: color-mix(in srgb, ${textColor} 60%, transparent);`}
+          >
+            <svg
+              class="text-4xl rounded-full"
+              style={`color: color-mix(in srgb, ${textColor} 40%, transparent);`}
+              fill="currentColor"
+              viewBox="0 0 512 512"
+              width="1em"
+              height="1em"
+            >
+              <path
+                d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"
+              ></path>
+            </svg>
+            <span>Algo salió mal.<br />Vuelve a intentar más tarde.</span>
+          </div>
+        </section>
+
+        <!-- Dynamic Sections -->
+        {
+          Array.from({ length: sections }, (_, i) => (
+            <section
+              id={`bottomsheet-section-${i}`}
+              class="bottomsheet-section flex flex-col items-start gap-4 md:min-w-48 lg:min-w-64 xl:min-w-81"
+              style={`color: ${textColor};`}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Estilos específicos que no se pueden expresar con Tailwind */
+
+  #bottomsheet-container {
+    visibility: hidden;
+    pointer-events: none;
+    color: var(--bottomsheet-text-color);
+  }
+
+  #bottomsheet-container:has(#bottomsheet.bottomsheet-open) {
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  #bottomsheet-container:has(#bottomsheet.bottomsheet-minimized) {
+    pointer-events: none;
+  }
+
+  #bottomsheet {
+    background-color: var(--bottomsheet-base-color);
+  }
+
+  @media (width < 768px) {
+    #bottomsheet {
+      border-top-color: var(--bottomsheet-border-color);
+    }
+  }
+
+  @media (width >= 768px) {
+    #bottomsheet {
+      border-left-color: var(--bottomsheet-border-color);
+    }
+  }
+
+  /* BottomSheet states */
+  #bottomsheet.bottomsheet-dragging {
+    transition: none;
+  }
+
+  #bottomsheet.bottomsheet-open {
+    height: 50%;
+    padding: 1rem;
+    padding-top: 0;
+  }
+
+  @media (min-width: 768px) {
+    #bottomsheet.bottomsheet-open {
+      padding-top: 1rem;
+      padding-left: 0;
+      height: 100%;
+      width: 33.333333%;
+    }
+  }
+
+  #bottomsheet.bottomsheet-open.bottomsheet-minimized {
+    height: 0;
+  }
+
+  @media (min-width: 768px) {
+    #bottomsheet.bottomsheet-open.bottomsheet-minimized {
+      height: 100%;
+      width: 2rem;
+      backdrop-filter: blur(4px);
+    }
+
+    #bottomsheet.bottomsheet-open.bottomsheet-minimized
+      #bottomsheet-content-wrapper {
+      opacity: 0;
+      transition: all 0.3s 0.2s;
+    }
+  }
+
+  #bottomsheet.bottomsheet-open.bottomsheet-updating #bottomsheet-header,
+  #bottomsheet.bottomsheet-open.bottomsheet-updating
+    section.bottomsheet-section {
+    transition-delay: 0s;
+    transition-duration: 0.3s;
+    transition-property: all;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background-color: color-mix(
+      in srgb,
+      var(--bottomsheet-border-color) 50%,
+      transparent
+    );
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    * {
+      opacity: 0 !important;
+    }
+  }
+
+  #bottomsheet.bottomsheet-open.bottomsheet-updating #bottomsheet-header *,
+  #bottomsheet.bottomsheet-open.bottomsheet-updating
+    section.bottomsheet-section
+    * {
+    opacity: 0 !important;
+  }
+
+  #bottomsheet.bottomsheet-open.bottomsheet-dragging {
+    transition: none;
+    user-select: none;
+  }
+
+  /* Hover state for close button */
+  #bottomsheet-close-btn:hover {
+    color: var(--bottomsheet-text-color) !important;
+    fill: var(--bottomsheet-text-color) !important;
+    background-color: color-mix(
+      in srgb,
+      var(--bottomsheet-text-color) 20%,
+      transparent
+    ) !important;
+  }
+
+  /* Content error state */
+  #bottomsheet-content.bottomsheet-error > :not(#bottomsheet-error) {
+    display: none;
+  }
+
+  #bottomsheet-error.bottomsheet-active {
+    display: flex;
+    align-items: center;
+  }
+
+  /* Store info hover effects */
+  .bottomsheet-info-text:hover svg {
+    fill: var(--bottomsheet-text-color);
+  }
+</style>
+
+<script>
+  import BottomSheet from "../core/BottomSheet.js";
+  import { setBottomSheet } from "../core/bottomSheetInstance.js";
+
+  // Initialize BottomSheet when the component is loaded
+  const bottomsheet = document.getElementById("bottomsheet");
+  if (bottomsheet) {
+    const options = JSON.parse(
+      bottomsheet.parentElement?.dataset.options || "{}"
+    );
+    const bottomSheet = new BottomSheet(bottomsheet, options);
+
+    // Register the instance for global access
+    setBottomSheet(bottomSheet);
+  }
+</script>

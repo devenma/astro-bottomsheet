@@ -1,0 +1,109 @@
+---
+/**
+ * BottomSheetTrigger Component
+ *
+ * Componente wrapper que abre el BottomSheet con contenido específico
+ * al hacer click en el elemento trigger.
+ *
+ * @example
+ * <BottomSheetTrigger title="Mi Título">
+ *   <button slot="trigger">Abrir Panel</button>
+ *   <div data-section="0">Contenido de la sección 1</div>
+ *   <div data-section="1">Contenido de la sección 2</div>
+ * </BottomSheetTrigger>
+ */
+
+interface Props {
+  /** Título del BottomSheet */
+  title: string;
+  /** Clase CSS adicional para el trigger */
+  class?: string;
+}
+
+const { title, class: className = "" } = Astro.props;
+
+// Generar un ID único para este trigger
+const triggerId = `bottomsheet-trigger-${Math.random().toString(36).substring(2, 11)}`;
+---
+
+<div
+  id={triggerId}
+  class:list={["bottomsheet-trigger", className]}
+  data-bottomsheet-title={title}
+>
+  <div class="bottomsheet-trigger-element">
+    <slot name="trigger">
+      <!-- Trigger por defecto si no se proporciona -->
+      <button
+        class="px-4 py-2 bg-blue-600 text-white rounded cursor-pointer hover:bg-blue-700 transition"
+      >
+        Open
+      </button>
+    </slot>
+  </div>
+
+  <!-- Hidden content containers -->
+  <div id={`${triggerId}-content`} style="display: none;">
+    <slot />
+  </div>
+</div>
+
+<script>
+  import { getBottomSheet } from "../core/bottomSheetInstance.js";
+
+  // Setup para todos los triggers en la página
+  document.querySelectorAll(".bottomsheet-trigger").forEach((trigger) => {
+    if (!(trigger instanceof HTMLElement)) return;
+
+    const triggerId = trigger.id;
+    const title = trigger.dataset.bottomsheetTitle || "";
+    const contentContainer = document.getElementById(`${triggerId}-content`);
+    const triggerElement = trigger.querySelector(
+      ".bottomsheet-trigger-element"
+    );
+
+    if (!triggerElement) return;
+
+    triggerElement.addEventListener("click", (e) => {
+      // Si el click es en un link o button dentro del trigger, no hacer nada
+      const target = e.target as HTMLElement;
+      if (target.tagName === "A" || target.closest("a")) {
+        return;
+      }
+
+      const bottomSheet = getBottomSheet();
+      if (!bottomSheet) {
+        console.warn("BottomSheet no está disponible");
+        return;
+      }
+
+      // Establecer título
+      bottomSheet.setTitle(title);
+
+      // Cargar contenido de cada sección
+      if (contentContainer) {
+        const sections = contentContainer.querySelectorAll("[data-section]");
+        sections.forEach((sectionElement) => {
+          const sectionIndex = parseInt(
+            (sectionElement as HTMLElement).dataset.section || "0"
+          );
+          if (!isNaN(sectionIndex)) {
+            bottomSheet.setSectionContent(
+              sectionIndex,
+              sectionElement.innerHTML
+            );
+          }
+        });
+      }
+
+      // Abrir el panel
+      bottomSheet.open();
+    });
+  });
+</script>
+
+<style>
+  .bottomsheet-trigger-element {
+    cursor: pointer;
+  }
+</style>
