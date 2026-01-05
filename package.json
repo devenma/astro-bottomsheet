@@ -1,6 +1,6 @@
 {
   "name": "@devenma/astro-bottomsheet",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Draggable bottom sheet / drawer component for Astro with TypeScript support",
   "keywords": [
     "astro",
@@ -47,6 +47,9 @@
     "./instance": {
       "types": "./dist/core/bottomSheetInstance.d.ts",
       "import": "./dist/core/bottomSheetInstance.js"
+    },
+    "./styles": {
+      "import": "./dist/styles/globals.css"
     }
   },
   "main": "./dist/core/BottomSheet.js",
@@ -57,17 +60,22 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsc && npm run copy-astro",
+    "build": "tsc && npm run build:css && npm run copy-astro",
+    "build:css": "postcss src/styles/globals.css -o dist/styles/globals.css",
     "copy-astro": "cpy \"src/components/**/*.astro\" \"dist/components\"",
     "prepublishOnly": "npm run build",
     "dev": "tsc --watch",
     "clean": "rimraf dist"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
     "@types/node": "25.0.3",
     "astro": "5.16.6",
     "cpy-cli": "6.0.0",
+    "postcss": "^8.5.6",
+    "postcss-cli": "^11.0.1",
     "rimraf": "6.1.2",
+    "tailwindcss": "^4.1.18",
     "typescript": "5.9.3"
   },
   "peerDependencies": {
