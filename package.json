@@ -2,10 +2,29 @@
   "name": "@devenma/astro-bottomsheet",
   "version": "1.0.0",
   "description": "Draggable bottom sheet / drawer component for Astro with TypeScript support",
+  "keywords": [
+    "astro",
+    "astro-component",
+    "bottomsheet",
+    "drawer",
+    "modal",
+    "panel",
+    "ui",
+    "draggable",
+    "bottom-drawer",
+    "sheet"
+  ],
+  "homepage": "https://github.com/devenma/astro-bottomsheet#readme",
+  "bugs": {
+    "url": "https://github.com/devenma/astro-bottomsheet/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devenma/astro-bottomsheet.git"
+  },
+  "license": "MIT",
+  "author": "Enmanuel Rosales Leon",
   "type": "module",
-  "main": "./dist/core/BottomSheet.js",
-  "module": "./dist/core/BottomSheet.js",
-  "types": "./dist/core/BottomSheet.d.ts",
   "exports": {
     ".": {
       "types": "./dist/core/BottomSheet.d.ts",
@@ -30,6 +49,8 @@
       "import": "./dist/core/bottomSheetInstance.js"
     }
   },
+  "main": "./dist/core/BottomSheet.js",
+  "types": "./dist/core/BottomSheet.d.ts",
   "files": [
     "dist",
     "README.md",
@@ -42,23 +63,6 @@
     "dev": "tsc --watch",
     "clean": "rimraf dist"
   },
-  "keywords": [
-    "astro",
-    "astro-component",
-    "bottomsheet",
-    "drawer",
-    "modal",
-    "panel",
-    "ui",
-    "draggable",
-    "bottom-drawer",
-    "sheet"
-  ],
-  "author": "Enmanuel Rosales Leon",
-  "license": "MIT",
-  "peerDependencies": {
-    "astro": "5.16.6"
-  },
   "devDependencies": {
     "@types/node": "25.0.3",
     "astro": "5.16.6",
@@ -66,12 +70,8 @@
     "rimraf": "6.1.2",
     "typescript": "5.9.3"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/devenma/astro-bottomsheet.git"
+  "peerDependencies": {
+    "astro": "5.16.6"
   },
-  "bugs": {
-    "url": "https://github.com/devenma/astro-bottomsheet/issues"
-  },
-  "homepage": "https://github.com/devenma/astro-bottomsheet#readme"
+  "module": "./dist/core/BottomSheet.js"
 }
