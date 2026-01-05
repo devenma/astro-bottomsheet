@@ -1,28 +1,26 @@
 name: Publish to npm
 
-on:
+on:  
   release: 
     types: [published]
 
-jobs:
+jobs: 
   publish: 
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      id-token:  write
+      contents:  read
+      id-token: write
     steps:
-      - uses:  actions/checkout@v4
-        with:
-          fetch-depth:  0 # Obtener todo el historial
+      - uses: actions/checkout@v4
       
-      - uses: actions/setup-node@v4
+      - uses:  actions/setup-node@v4
         with:
-          node-version:  20
-          registry-url:  https://registry.npmjs.org/
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
       
-      - name:  Install pnpm
-        uses:  pnpm/action-setup@v2
-        with:
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with: 
           version: latest
       
       - name: Get pnpm store directory
@@ -34,24 +32,15 @@ jobs:
       - uses: actions/cache@v3
         name: Setup pnpm cache
         with:
-          path: ${{ steps.pnpm-cache. outputs.STORE_PATH }}
+          path:  ${{ steps.pnpm-cache.outputs.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
+          restore-keys:  |
             ${{ runner.os }}-pnpm-store-
       
-      - run: pnpm install --frozen-lockfile
-      
-      # Opcional: ejecutar tests antes de publicar
-      - name: Run tests
-        run: pnpm test
-        continue-on-error: false
-      
-      # Opcional: build si es necesario
-      - name: Build
-        run: pnpm build
-        if: hashFiles('tsconfig.json') != ''
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
       
       - name: Publish to npm
         run: pnpm publish --no-git-checks --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        env: 
+          NODE_AUTH_TOKEN:  ${{ secrets.NPM_TOKEN }}
