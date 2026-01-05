@@ -453,7 +453,7 @@ export default class BottomSheet {
 
     if (this.state.isMaximized) {
       const panelContent = this.panel.querySelector("#bottomsheet-content");
-      panelContent?.classList.remove("overflow-hidden");
+      panelContent?.classList.remove("bs:overflow-hidden");
     }
 
     this.state.isDragging = true;
@@ -481,7 +481,7 @@ export default class BottomSheet {
     }
 
     // NO agregar la clase 'dragging' aquí, se agregará cuando haya movimiento real
-    document.body.classList.add("select-none", "overflow-hidden");
+    document.body.classList.add("bs:select-none", "bs:overflow-hidden");
   }
 
   /**
@@ -529,14 +529,14 @@ export default class BottomSheet {
       this.panel.classList.add("bottomsheet-move-up");
       this.panel.classList.remove("bottomsheet-move-down");
       if (!this.state.isMaximized) {
-        panelContent?.classList.add("overflow-hidden");
+        panelContent?.classList.add("bs:overflow-hidden");
       } else {
-        panelContent?.classList.remove("overflow-hidden");
+        panelContent?.classList.remove("bs:overflow-hidden");
       }
     } else {
       this.panel.classList.remove("bottomsheet-move-up");
       this.panel.classList.add("bottomsheet-move-down");
-      panelContent?.classList.remove("overflow-hidden");
+      panelContent?.classList.remove("bs:overflow-hidden");
     }
 
     // Verificar si hay scroll disponible
@@ -595,7 +595,7 @@ export default class BottomSheet {
     this.state.hasMoved = false;
     this.state.isDragging = false;
     this.panel.classList.remove("bottomsheet-dragging");
-    document.body.classList.remove("select-none", "overflow-hidden");
+    document.body.classList.remove("bs:select-none", "bs:overflow-hidden");
 
     // Si no hubo movimiento, fue un click, no ejecutar lógica de finalización de drag
     if (!hadMovement) return;

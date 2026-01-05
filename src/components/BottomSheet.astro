@@ -1,5 +1,5 @@
 ---
-import '../styles/globals.css';
+import "../styles/globals.css";
 
 /**
  * BottomSheet Component for Astro
@@ -34,7 +34,7 @@ const {
 <!-- BottomSheet -->
 <div
   id="bottomsheet-container"
-  class="fixed inset-0 flex items-end md:items-center justify-center z-50"
+  class="bottomsheet-container bs:fixed bs:inset-0 bs:flex bs:items-end bs:md:items-center bs:justify-center bs:z-50"
   data-options={JSON.stringify(options)}
   style={`
       --bottomsheet-base-color: ${baseColor};
@@ -45,42 +45,45 @@ const {
   <div
     id="bottomsheet"
     class:list={[
-      "border border-transparent cursor-auto duration-600 ease-in-out flex flex-col h-0 self-end md:border-t-transparent md:flex-row md:h-full md:ml-auto md:mt-0 md:rounded-t-none md:w-0 mt-auto pointer-events-auto relative rounded-t-4xl transition-all w-full will-change-auto z-50 md:max-w-125",
+      "bs:border bs:border-transparent bs:cursor-auto bs:duration-600 bs:ease-in-out bs:flex bs:flex-col bs:h-0 bs:self-end bs:md:border-t-transparent bs:md:flex-row bs:md:h-full bs:md:ml-auto bs:md:mt-0 bs:md:rounded-t-none bs:md:w-0 bs:mt-auto bs:pointer-events-auto bs:relative bs:rounded-t-4xl bs:transition-all bs:w-full bs:will-change-auto bs:z-50 bs:md:max-w-125",
       className,
     ]}
   >
     <!-- Drag Handle -->
     <div
       id="bottomsheet-drag-handle"
-      class="flex items-center py-2 md:py-0 md:px-3 justify-center cursor-grab"
+      class="bs:flex bs:items-center bs:py-2 bs:md:py-0 bs:md:px-3 bs:justify-center bs:cursor-grab"
     >
       <div
-        class="bottomsheet-line w-10 md:w-auto md:h-16 border-b-4 md:border-b-0 md:border-l-4 rounded-full"
+        class="bottomsheet-line bs:w-10 bs:md:w-auto bs:md:h-16 bs:border-b-4 bs:md:border-b-0 bs:md:border-l-4 bs:rounded-full"
         style={`border-color: color-mix(in srgb, ${borderColor} 80%, transparent);`}
       >
       </div>
     </div>
 
     <!-- Content Wrapper -->
-    <div id="bottomsheet-content-wrapper" class="flex flex-col w-full">
+    <div id="bottomsheet-content-wrapper" class="bs:flex bs:flex-col bs:w-full">
       <!-- Header -->
       <header
         id="bottomsheet-header"
-        class="flex gap-4 py-2 px-1 items-center border-b shrink-0"
+        class="bs:flex bs:gap-4 bs:py-2 bs:px-1 bs:items-center bs:border-b bs:shrink-0"
         style={`border-color: ${borderColor};`}
       >
         <h2
           id="bottomsheet-title"
-          class="m-0 italic font-light max-md:text-xl md:text-3xl md:font-medium text-nowrap text-ellipsis overflow-hidden"
+          class="bs:m-0 bs:italic bs:font-light bs:max-md:text-xl bs:md:text-3xl bs:md:font-medium bs:text-nowrap bs:text-ellipsis bs:overflow-hidden"
           style={`color: ${textColor};`}
         >
         </h2>
-        <div id="bottomsheet-share-btn" class="bottomsheet-header-btn ml-auto">
-          <span class="hidden"></span>
+        <div
+          id="bottomsheet-share-btn"
+          class="bottomsheet-header-btn bs:ml-auto"
+        >
+          <span class="bs:hidden"></span>
         </div>
         <button
           id="bottomsheet-close-btn"
-          class="bottomsheet-close-btn bottomsheet-header-btn text-base transition rounded-full p-2 cursor-pointer size-8 flex items-center justify-center"
+          class="bottomsheet-close-btn bottomsheet-header-btn bs:text-base bs:transition bs:rounded-full bs:p-2 bs:cursor-pointer bs:size-8 bs:flex bs:items-center bs:justify-center"
           style={`
             color: color-mix(in srgb, ${textColor} 70%, transparent);
             fill: color-mix(in srgb, ${textColor} 70%, transparent);
@@ -104,20 +107,20 @@ const {
       <!-- Content -->
       <div
         id="bottomsheet-content"
-        class="p-4 flex flex-col gap-2 overflow-y-auto overflow-x-hidden flex-1"
+        class="bs:p-4 bs:flex bs:flex-col bs:gap-2 bs:overflow-y-auto bs:overflow-x-hidden bs:flex-1"
       >
         <!-- Error Message (always present, hidden by default) -->
         <section
           id="bottomsheet-error"
-          class="bottomsheet-section flex-col items-start gap-4 md:min-w-48 lg:min-w-64 xl:min-w-81 hidden"
+          class="bottomsheet-section bs:flex-col bs:items-start bs:gap-4 bs:md:min-w-48 bs:lg:min-w-64 bs:xl:min-w-81 bs:hidden"
           style={`color: ${textColor};`}
         >
           <div
-            class="bottomsheet-error flex-col gap-4 w-full flex items-center text-xl text-center"
+            class="bottomsheet-error bs:flex-col bs:gap-4 bs:w-full bs:flex bs:items-center bs:text-xl bs:text-center"
             style={`color: color-mix(in srgb, ${textColor} 60%, transparent);`}
           >
             <svg
-              class="text-4xl rounded-full"
+              class="bs:text-4xl bs:rounded-full"
               style={`color: color-mix(in srgb, ${textColor} 40%, transparent);`}
               fill="currentColor"
               viewBox="0 0 512 512"
@@ -137,7 +140,7 @@ const {
           Array.from({ length: sections }, (_, i) => (
             <section
               id={`bottomsheet-section-${i}`}
-              class="bottomsheet-section flex flex-col items-start gap-4 md:min-w-48 lg:min-w-64 xl:min-w-81"
+              class="bottomsheet-section bs:flex bs:flex-col bs:items-start bs:gap-4 bs:md:min-w-48 bs:lg:min-w-64 bs:xl:min-w-81"
               style={`color: ${textColor};`}
             />
           ))

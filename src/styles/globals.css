@@ -1,1 +1,7 @@
-@import "tailwindcss";
+@layer theme, base, components, utilities;
+.bottomsheet-container,
+.bottomsheet-trigger {
+  @import "tailwindcss/preflight.css" layer(base) prefix(bs);
+}
+@import "tailwindcss/theme.css" layer(theme) prefix(bs);
+@import "tailwindcss/utilities.css" layer(utilities) prefix(bs);
